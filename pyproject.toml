@@ -1,0 +1,24 @@
+[project]
+name = "sigyx"
+version = "0.1.0"
+description = "thesignumt's shell"
+authors = [
+    {name = "thesignumt", email = "tcrrxzz@gmail.com"}
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "lark"
+]
+
+[project.scripts]
+sigyx = "sigyx.cli:main"
+
+[project.urls]
+Repository = "https://github.com/thesignumt/sigyx.git"
+
+
+[build-system]
+requires = ["setuptools >= 80.9.0", "wheel"]
+build-backend = "setuptools.build_meta"
