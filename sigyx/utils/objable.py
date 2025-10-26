@@ -19,12 +19,12 @@ class OT:
             self._.update(self._convert(d))
 
     def _convert(self, v: Any) -> Any:
-        if isinstance(v, OT):
-            return v
         if isinstance(v, dict):
             return {k: self._convert(val) for k, val in v.items()}
         if isinstance(v, list):
-            return [self._convert(x) if isinstance(x, dict) else x for x in v]
+            return [self._convert(x) for x in v]
+        if isinstance(v, OT):
+            return v
         return v
 
     def __getattr__(self, k: str) -> Any:
