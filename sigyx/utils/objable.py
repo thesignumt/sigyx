@@ -99,6 +99,9 @@ class OT:
     def copy(self) -> Self:
         return type(self)(self.freeze(), self._default)
 
+    def to_json(self, **kwargs) -> str:
+        return json.dumps(self.freeze(), **kwargs)
+
     def __contains__(self, k: str) -> bool:
         return k in self._
 
@@ -107,9 +110,7 @@ class OT:
         return bool(self._)
 
     def __repr__(self) -> str:
-        inner = shorten(
-            json.dumps(self.freeze(), ensure_ascii=False), self._TRUNCATE_LEN
-        )
+        inner = shorten(self.to_json(ensure_ascii=False), self._TRUNCATE_LEN)
         return f"OT({inner})"
 
 
