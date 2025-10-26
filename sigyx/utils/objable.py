@@ -10,6 +10,8 @@ type DictAny = dict[str, Any]
 class OT:
     "objable  object table"
 
+    __slots__ = ("_", "_default")
+
     _TRUNCATE_LEN = 100
 
     def __init__(self, d: Optional[dict[str, Any]] = None, default: Any = None) -> None:
