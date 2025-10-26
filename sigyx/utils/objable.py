@@ -93,6 +93,9 @@ class OT:
     def values(self) -> ValuesView[Any]:
         return self._.values()
 
+    def copy(self) -> Self:
+        return type(self)(self.freeze(), self._default)
+
     def __contains__(self, k: str) -> bool:
         return k in self._
 
