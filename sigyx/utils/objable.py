@@ -12,13 +12,11 @@ class OT:
 
     _TRUNCATE_LEN = 100
 
-    # __slots__ = ("_", "_default")
-
     def __init__(self, d: Optional[dict[str, Any]] = None, default: Any = None) -> None:
-        object.__setattr__(self, "_", {})
-        object.__setattr__(self, "_default", default)
+        self._ = {}
+        self._default = default
         if d:
-            object.__setattr__(self, "_", self._convert(d))
+            self._.update(self._convert(d))
 
     def _convert(self, v: Any) -> Any:
         if isinstance(v, OT):
