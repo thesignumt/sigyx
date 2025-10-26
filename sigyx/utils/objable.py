@@ -55,10 +55,11 @@ class OT:
             self._[k] = self._convert(v)
 
     def merge(self, other: dict[str, Any] | Self) -> None:
-        items = other.items() if isinstance(other, dict) else other._.items()
-        for k, v in items:
-            if isinstance(self._.get(k), OT) and isinstance(v, (dict, OT)):
-                self._[k].merge(v)
+        src = other._ if isinstance(other, OT) else other
+        for k, v in src.items():
+            cur = self._.get(k)
+            if isinstance(cur, OT) and isinstance(v, (OT, dict)):
+                cur.merge(v)
             else:
                 self._[k] = self._convert(v)
 
