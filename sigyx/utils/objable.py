@@ -118,5 +118,8 @@ def o(d: Optional[str | dict[str, Any] | OT] = None) -> OT:
     if isinstance(d, OT):
         return d
     if isinstance(d, str):
-        d = json.loads(d)
+        try:
+            d = json.loads(d)
+        except json.JSONDecodeError:
+            d = {}
     return OT(d or {})  # pyright: ignore
