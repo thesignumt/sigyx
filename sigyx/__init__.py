@@ -1,3 +1,9 @@
-from .cli import main
+from .cli import Sigyx
+
+
+def main():
+    shell = Sigyx()
+    shell.main()
+
 
 __all__ = ["main"]
