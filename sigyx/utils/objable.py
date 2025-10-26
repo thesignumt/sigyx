@@ -18,13 +18,13 @@ class OT:
         object.__setattr__(self, "_", {})
         object.__setattr__(self, "_default", default)
         if d:
-            self._ = self._convert(d)
+            object.__setattr__(self, "_", self._convert(d))
 
     def _convert(self, v: Any) -> Any:
         if isinstance(v, OT):
             return v
         if isinstance(v, dict):
-            return OT({k: self._convert(val) for k, val in v.items()})
+            return {k: self._convert(val) for k, val in v.items()}
         if isinstance(v, list):
             return [self._convert(x) if isinstance(x, dict) else x for x in v]
         return v
