@@ -107,7 +107,10 @@ class OT:
         return bool(self._)
 
     def __repr__(self) -> str:
-        return shorten(f"OT({self._})", width=self._TRUNCATE_LEN, placeholder="...")
+        inner = shorten(
+            json.dumps(self.freeze(), ensure_ascii=False), self._TRUNCATE_LEN
+        )
+        return f"OT({inner})"
 
 
 def o(d: Optional[str | dict[str, Any] | OT] = None) -> OT:
