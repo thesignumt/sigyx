@@ -10,7 +10,7 @@ type DictAny = dict[str, Any]
 class OT:
     "objable  object table"
 
-    _TRUNCATE_LEN = 80
+    _TRUNCATE_LEN = 100
 
     # __slots__ = ("_", "_default")
 
