@@ -62,8 +62,8 @@ _transformer = ShellTransformer()
 
 
 class ParsedCmd(OT):
-    def __init__(self, cmd: str, args: list[str | int | float]) -> None:
-        super().__init__({"cmd": cmd, "args": args})
+    cmd: str
+    args: list[str | int | float]
 
 
 def parse(cmd: str) -> ParsedCmd:
