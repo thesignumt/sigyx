@@ -1,17 +1,17 @@
-import os
 from parser import parse
 
 from cmds import _cmdr
+from utils.shellenv import ShellEnv
 
 
 class Sigyx:
     def __init__(self):
-        self.cwd = os.getcwd()
+        self.shell = ShellEnv()
 
     def main(self):
         while True:
             try:
-                inp = input(f"[{self.cwd}] $ ").strip()
+                inp = input(f"[{self.shell.pwd}] $ ").strip()
                 if not inp:
                     continue
                 if inp in ("exit", "quit"):
