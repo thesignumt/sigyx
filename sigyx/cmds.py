@@ -8,7 +8,7 @@ _cmdr = Reg()
 
 
 @_cmdr
-def cd(args: list, shell):
+def cd(args: list, shell) -> None:
     if not args:
         Err.msg("cd", "missing operand")
         return
@@ -23,12 +23,12 @@ def cd(args: list, shell):
 
 
 @_cmdr
-def pwd(args: list, shell):
+def pwd(args: list, shell) -> None:
     console.print(shell.cwd, style="cyan")
 
 
 @_cmdr
-def mkdir(args: list, shell):
+def mkdir(args: list, shell) -> None:
     if not args:
         Err.msg("mkdir", "missing operand")
         return
@@ -43,7 +43,7 @@ def mkdir(args: list, shell):
 
 
 @_cmdr
-def ls(args: list, shell):
+def ls(args: list, shell) -> None:
     path = os.path.join(shell.cwd, args[0]) if args else shell.cwd
     try:
         for entry in os.listdir(path):
@@ -57,7 +57,7 @@ def ls(args: list, shell):
 
 
 @_cmdr
-def cat(args: list, shell):
+def cat(args: list, shell) -> None:
     if not args:
         Err.msg("cat", "missing operand")
         return
@@ -73,7 +73,7 @@ def cat(args: list, shell):
 
 
 @_cmdr
-def rm(args: list, shell):
+def rm(args: list, shell) -> None:
     if not args:
         Err.msg("rm", "missing operand")
         return
