@@ -24,12 +24,12 @@ class Sigyx:
                 if func:
                     func(args, self.shell)
                 else:
-                    Err.msg(cmd, "testing")
+                    Err.msg(cmd, "not a command or executable")
             except (KeyboardInterrupt, EOFError):
                 print()
                 break
             except Exception as e:
-                print(f"Error: {e}")
+                Err.msg("error", str(e))
 
 
 def main():
