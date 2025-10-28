@@ -9,24 +9,25 @@ class Sigyx:
         self.shell = ShellEnv()
 
     def main(self):
-        while True:
+        sigyx = True
+        while sigyx:
             try:
                 inp = input(f"[{self.shell.pwd}] $ ").strip()
                 if not inp:
                     continue
                 if inp in ("exit", "quit"):
-                    break
+                    sigyx = False
                 parsed = parse(inp)
                 cmd = parsed.cmd
                 args = parsed.args
                 func = _cmdr.all.get(cmd)
                 if func:
-                    func(args, self)
+                    func(args, self.shell)
                 else:
                     print(f"Unknown command: {cmd}")
             except (KeyboardInterrupt, EOFError):
                 print()
-                break
+                sigyx = False
             except Exception as e:
                 print(f"Error: {e}")
 
