@@ -17,10 +17,11 @@ class Sigyx:
                     continue
                 if inp in ("exit", "quit"):
                     sigyx = False
+
                 parsed = parse(inp)
-                cmd = parsed.cmd
-                args = parsed.args
+                cmd, args = parsed.cmd, parsed.args
                 func = _cmdr.all.get(cmd)
+
                 if func:
                     func(args, self.shell)
                 else:
