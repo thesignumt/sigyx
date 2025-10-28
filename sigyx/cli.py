@@ -1,6 +1,7 @@
 from parser import parse
 
 from cmds import _cmdr
+from utils.err import Err
 from utils.shellenv import ShellEnv
 
 
@@ -25,7 +26,7 @@ class Sigyx:
                 if func:
                     func(args, self.shell)
                 else:
-                    print(f"Unknown command: {cmd}")
+                    Err.msg(cmd, "testing")
             except (KeyboardInterrupt, EOFError):
                 print()
                 sigyx = False
