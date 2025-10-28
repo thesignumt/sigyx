@@ -1,7 +1,7 @@
 [project]
 name = "sigyx"
 version = "0.1.1"
-description = "thesignumt's shell"
+description = "thesignumt's custom shell"
 authors = [
     {name = "thesignumt", email = "tcrrxzz@gmail.com"}
 ]
