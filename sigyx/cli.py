@@ -1,8 +1,7 @@
-from parser import parse
-
-from cmds import _cmdr
-from utils.err import Err
-from utils.shellenv import ShellEnv
+from .cmds import _cmdr
+from .parser import parse
+from .utils.err import Err
+from .utils.shellenv import ShellEnv
 
 
 class Sigyx:

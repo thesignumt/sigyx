@@ -1,5 +1,6 @@
 from lark import Lark, Transformer
-from utils.objable import OT
+
+from .utils.objable import OT
 
 shell_grammar = r"""
 start: command (";" command)*
