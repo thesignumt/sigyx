@@ -33,6 +33,10 @@ class Sigyx:
                 print(f"Error: {e}")
 
 
-if __name__ == "__main__":
+def main():
     shell = Sigyx()
     shell.main()
+
+
+if __name__ == "__main__":
+    main()
