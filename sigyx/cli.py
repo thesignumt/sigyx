@@ -9,14 +9,13 @@ class Sigyx:
         self.shell = ShellEnv()
 
     def main(self):
-        sigyx = True
-        while sigyx:
+        while True:
             try:
                 inp = input(f"[{self.shell.pwd}] $ ").strip()
                 if not inp:
                     continue
                 if inp in ("exit", "quit"):
-                    sigyx = False
+                    break
 
                 parsed = parse(inp)
                 cmd, args = parsed.cmd, parsed.args
@@ -28,7 +27,7 @@ class Sigyx:
                     Err.msg(cmd, "testing")
             except (KeyboardInterrupt, EOFError):
                 print()
-                sigyx = False
+                break
             except Exception as e:
                 print(f"Error: {e}")
 
