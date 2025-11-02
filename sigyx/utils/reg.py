@@ -1,6 +1,6 @@
 """registry"""
 
-from typing import Any, Callable
+from typing import Any, Callable, Optional
 
 
 class Reg:
@@ -9,9 +9,15 @@ class Reg:
     def __init__(self):
         self._registry: dict[str, Callable[..., Any]] = {}
 
-    def __call__(self, func: Callable[..., Any]):
-        self._registry[func.__name__] = func
-        return func
+    def __call__(self, f: Optional[Callable[..., Any]] = None, *, name: str = ""):
+        def decorator(inner_f: Callable[..., Any]):
+            key = name or inner_f.__name__
+            self._registry[key] = inner_f
+            return inner_f
+
+        if f is not None and callable(f):
+            return decorator(f)
+        return decorator
 
     def __getitem__(self, name: str) -> Callable[..., Any]:
         return self._registry[name]
