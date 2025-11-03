@@ -1,15 +1,25 @@
-from .color import console
+from .color import Color
 
 
 class Err:
-    @staticmethod
-    def msg(cmd: str, message: str) -> None:
-        console.print(f"[red]{cmd}:[/red] {message}")
+    _styles = {
+        "msg": "red",
+        "warn": "yellow",
+        "info": "cyan",
+    }
 
     @staticmethod
-    def warn(cmd: str, message: str) -> None:
-        console.print(f"[yellow]{cmd}:[/yellow] {message}")
+    def _print(cmd: str, message: str, style: str) -> None:
+        Color.print(f"{cmd}: {message}", color=style, bold=True)
 
-    @staticmethod
-    def info(cmd: str, message: str) -> None:
-        console.print(f"[cyan]{cmd}:[/cyan] {message}")
+    @classmethod
+    def msg(cls, cmd: str, message: str) -> None:
+        cls._print(cmd, message, cls._styles["msg"])
+
+    @classmethod
+    def warn(cls, cmd: str, message: str) -> None:
+        cls._print(cmd, message, cls._styles["warn"])
+
+    @classmethod
+    def info(cls, cmd: str, message: str) -> None:
+        cls._print(cmd, message, cls._styles["info"])
