@@ -15,6 +15,7 @@ class Sigyx:
                 if not inp:
                     continue
                 if inp in ("exit", "quit"):
+                    print()
                     break
 
                 parsed = parse(inp)
@@ -26,7 +27,7 @@ class Sigyx:
                 else:
                     Err.msg(cmd, "not a command or executable")
             except (KeyboardInterrupt, EOFError):
-                print()
+                print("\n")
                 break
             except Exception as e:
                 Err.msg("error", str(e))
