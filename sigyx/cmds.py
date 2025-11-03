@@ -1,8 +1,11 @@
 import os
 import platform
+import stat
+from datetime import datetime
 from pathlib import Path
 
-from .utils.color import Color, console
+from .cli import _shell
+from .utils.color import console
 from .utils.err import Err
 from .utils.reg import Reg
 
@@ -59,16 +62,46 @@ def mkdir(args: list, shell) -> None:
 
 @_cmdr.reg
 def ls(args: list, shell) -> None:
-    path = os.path.join(shell.cwd, args[0]) if args else shell.cwd
+    path = Path(args[0]) if args else shell.cwd
     try:
-        for entry in os.listdir(path):
-            entry_path = os.path.join(path, entry)
-            if os.path.isdir(entry_path):
-                Color.print(entry, "blue", bold=True)
-            else:
-                Color.print(entry, "green")
+        entries = os.listdir(path)
+        for entry in entries:
+            full_path = path / entry
+            info = os.stat(full_path)
+
+            # File type
+            ftype = "d" if stat.S_ISDIR(info.st_mode) else "-"
+
+            # Permissions (like rwxr-xr-x)
+            perms = "".join(
+                [
+                    "r" if info.st_mode & mask else "-"
+                    for mask in [
+                        stat.S_IRUSR,
+                        stat.S_IWUSR,
+                        stat.S_IXUSR,
+                        stat.S_IRGRP,
+                        stat.S_IWGRP,
+                        stat.S_IXGRP,
+                        stat.S_IROTH,
+                        stat.S_IWOTH,
+                        stat.S_IXOTH,
+                    ]
+                ]
+            )
+
+            # Size in bytes
+            size = info.st_size
+
+            # Modification time
+            mtime = datetime.fromtimestamp(info.st_mtime).strftime("%b %d %H:%M")
+
+            print(f"{ftype}{perms} {size:>8} {mtime} {entry}")
+
     except FileNotFoundError:
-        Err.msg("ls", f"cannot access '{path}': No such file or directory")
+        Err.msg("ls", f"path '{path}' not found.")
+    except PermissionError:
+        Err.msg("ls", f"permission denied for '{path}'.")
 
 
 @_cmdr.reg
