@@ -1,6 +1,6 @@
 """registry"""
 
-from typing import Any, Callable, Optional
+from typing import Any, Callable, overload
 
 
 class Reg:
@@ -9,15 +9,19 @@ class Reg:
     def __init__(self):
         self._registry: dict[str, Callable[..., Any]] = {}
 
-    def __call__(self, f: Optional[Callable[..., Any]] = None, *, name: str = ""):
-        def decorator(inner_f: Callable[..., Any]):
-            key = name or inner_f.__name__
-            self._registry[key] = inner_f
-            return inner_f
+    @overload
+    def reg[F: Callable[..., Any]](self, f: F) -> F: ...
+    @overload
+    def reg[F: Callable[..., Any]](self, *, name: str = "") -> Callable[[F], F]: ...
 
-        if f is not None and callable(f):
-            return decorator(f)
-        return decorator
+    def reg[F: Callable[..., Any]](
+        self, f: F | None = None, *, name: str = ""
+    ) -> Callable[[F], F]:
+        def decorator(real_f: F) -> F:
+            self._registry[name or real_f.__name__] = real_f
+            return real_f
+
+        return decorator if f is None else decorator(f)
 
     def __getitem__(self, name: str) -> Callable[..., Any]:
         return self._registry[name]
