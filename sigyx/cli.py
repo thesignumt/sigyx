@@ -1,17 +1,25 @@
+import os
+from dataclasses import dataclass
+
 from .cmds import _cmdr
 from .parser import parse
 from .utils.err import Err
-from .utils.shellenv import ShellEnv
+
+
+@dataclass
+class _shell:
+    cwd: str = os.path.expanduser(os.getcwd())
 
 
 class Sigyx:
-    def __init__(self):
-        self.shell = ShellEnv()
+    def prompt(self, _shell: _shell) -> str:
+        return input(f"{_shell.cwd} λ ")
 
     def main(self):
+        shell = _shell()
         while True:
             try:
-                inp = input(f"[{self.shell.pwd}] $ ").strip()
+                inp = self.prompt(shell)
                 if not inp:
                     continue
                 if inp in ("exit", "quit"):
@@ -23,7 +31,7 @@ class Sigyx:
                 func = _cmdr.all.get(cmd)
 
                 if func:
-                    func(args, self.shell)
+                    func(args, shell)
                 else:
                     Err.msg(cmd, "not a command or executable")
             except (KeyboardInterrupt, EOFError):
