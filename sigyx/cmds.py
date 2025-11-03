@@ -30,7 +30,7 @@ def cd(args: list, shell: _shell) -> None:
         return
     try:
         os.chdir(str(new_dir))
-        shell.cwd = str(new_dir)
+        shell.cwd = new_dir
     except Exception as e:
         Err.msg("cd", str(e))
 
