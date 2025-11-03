@@ -1,6 +1,6 @@
 """registry"""
 
-from typing import Any, Callable, overload
+from typing import Any, Callable, Iterable, overload
 
 
 class Reg:
@@ -12,13 +12,18 @@ class Reg:
     @overload
     def reg[F: Callable[..., Any]](self, f: F) -> F: ...
     @overload
-    def reg[F: Callable[..., Any]](self, *, name: str = "") -> Callable[[F], F]: ...
+    def reg[F: Callable[..., Any]](
+        self, *, name: str = "", aliases: Iterable[str] = ()
+    ) -> Callable[[F], F]: ...
 
     def reg[F: Callable[..., Any]](
-        self, f: F | None = None, *, name: str = ""
+        self, f: F | None = None, *, name: str = "", aliases: Iterable[str] = ()
     ) -> Callable[[F], F]:
         def decorator(real_f: F) -> F:
-            self._registry[name or real_f.__name__] = real_f
+            key = name or real_f.__name__
+            self._registry[key] = real_f
+            for a in aliases:
+                self._registry[a] = real_f
             return real_f
 
         return decorator if f is None else decorator(f)
