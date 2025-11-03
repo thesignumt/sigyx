@@ -1,14 +1,14 @@
-import os
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from pathlib import Path
 
 from .cmds import _cmdr
 from .parser import parse
 from .utils.err import Err
 
 
-@dataclass
+@dataclass(slots=True)
 class _shell:
-    cwd: str = os.path.expanduser(os.getcwd())
+    cwd: Path = field(default_factory=Path.cwd)
 
 
 class Sigyx:
