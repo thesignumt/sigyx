@@ -1,4 +1,6 @@
 import os
+import platform
+from pathlib import Path
 
 from .utils.color import Color, console
 from .utils.err import Err
@@ -6,28 +8,41 @@ from .utils.reg import Reg
 
 _cmdr = Reg()
 
+# +--------------------------------------------------------+
+# [                        file nav                        ]
+# +--------------------------------------------------------+
 
-@_cmdr
+
+@_cmdr.reg
 def cd(args: list, shell) -> None:
     if not args:
         Err.msg("cd", "missing operand")
         return
-    new_dir = os.path.abspath(os.path.join(shell.cwd, args[0]))
-    try:
-        os.chdir(new_dir)
-        shell.cwd = new_dir
-    except FileNotFoundError:
+    new_dir = (Path(shell.cwd) / args[0]).resolve()
+    if not new_dir.exists():
         Err.msg("cd", f"no such file or directory: {args[0]}")
-    except NotADirectoryError:
+        return
+    if not new_dir.is_dir():
         Err.msg("cd", f"not a directory: {args[0]}")
+        return
+    try:
+        os.chdir(str(new_dir))
+        shell.cwd = str(new_dir)
+    except Exception as e:
+        Err.msg("cd", str(e))
 
 
-@_cmdr
+@_cmdr.reg(name="cd..")
+def cd_back(args: list, shell) -> None:
+    cd([".."], shell)
+
+
+@_cmdr.reg
 def pwd(args: list, shell) -> None:
     console.print(shell.cwd, style="cyan")
 
 
-@_cmdr
+@_cmdr.reg
 def mkdir(args: list, shell) -> None:
     if not args:
         Err.msg("mkdir", "missing operand")
@@ -42,7 +57,7 @@ def mkdir(args: list, shell) -> None:
             Err.msg("mkdir", str(e))
 
 
-@_cmdr
+@_cmdr.reg
 def ls(args: list, shell) -> None:
     path = os.path.join(shell.cwd, args[0]) if args else shell.cwd
     try:
@@ -56,7 +71,7 @@ def ls(args: list, shell) -> None:
         Err.msg("ls", f"cannot access '{path}': No such file or directory")
 
 
-@_cmdr
+@_cmdr.reg
 def cat(args: list, shell) -> None:
     if not args:
         Err.msg("cat", "missing operand")
@@ -72,7 +87,7 @@ def cat(args: list, shell) -> None:
             Err.msg("cat", f"{f}: {e}")
 
 
-@_cmdr
+@_cmdr.reg
 def rm(args: list, shell) -> None:
     if not args:
         Err.msg("rm", "missing operand")
@@ -88,3 +103,13 @@ def rm(args: list, shell) -> None:
             Err.msg("rm", f"cannot remove '{f}': No such file or directory")
         except OSError:
             Err.msg("rm", f"cannot remove '{f}': Directory not empty")
+
+
+# +--------------------------------------------------------+
+# [                        internal                        ]
+# +--------------------------------------------------------+
+
+
+@_cmdr.reg
+def cls(args: list, shell):
+    os.system("cls" if platform.system() == "Windows" else "clear")
