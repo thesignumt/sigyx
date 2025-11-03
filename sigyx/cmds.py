@@ -53,7 +53,7 @@ def mkdir(args: list, shell: _shell) -> None:
     for d in args:
         path = shell.cwd / d
         try:
-            os.mkdir(path)
+            path.mkdir()
         except FileExistsError:
             Err.warn("mkdir", f"cannot create directory '{d}': File exists")
         except Exception as e:
@@ -64,10 +64,10 @@ def mkdir(args: list, shell: _shell) -> None:
 def ls(args: list, shell: _shell) -> None:
     path = Path(args[0]) if args else shell.cwd
     try:
-        entries = os.listdir(path)
+        entries = [e.name for e in path.iterdir()]
         for entry in entries:
             full_path = path / entry
-            info = os.stat(full_path)
+            info = full_path.stat()
 
             # File type
             ftype = "d" if stat.S_ISDIR(info.st_mode) else "-"
@@ -129,9 +129,9 @@ def rm(args: list, shell: _shell) -> None:
         path = shell.cwd / f
         try:
             if path.is_dir():
-                os.rmdir(path)
+                path.rmdir()
             else:
-                os.remove(path)
+                path.unlink()
         except FileNotFoundError:
             Err.msg("rm", f"cannot remove '{f}': No such file or directory")
         except OSError:
