@@ -33,7 +33,7 @@ class Sigyx:
                 if func:
                     func(args, shell)
                 else:
-                    Err.msg(cmd, "not a command or executable")
+                    Err.msg(cmd, "not a command")
             except (KeyboardInterrupt, EOFError):
                 print("\n")
                 break
