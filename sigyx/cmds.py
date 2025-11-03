@@ -110,6 +110,6 @@ def rm(args: list, shell) -> None:
 # +--------------------------------------------------------+
 
 
-@_cmdr.reg
+@_cmdr.reg(aliases=["clear"])
 def cls(args: list, shell):
     os.system("cls" if platform.system() == "Windows" else "clear")
