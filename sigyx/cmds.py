@@ -51,7 +51,7 @@ def mkdir(args: list, shell) -> None:
         Err.msg("mkdir", "missing operand")
         return
     for d in args:
-        path = os.path.join(shell.cwd, d)
+        path = shell.cwd / d
         try:
             os.mkdir(path)
         except FileExistsError:
@@ -110,7 +110,7 @@ def cat(args: list, shell) -> None:
         Err.msg("cat", "missing operand")
         return
     for f in args:
-        path = os.path.join(shell.cwd, f)
+        path = shell.cwd / f
         try:
             with open(path, "r") as file:
                 console.print(file.read(), end="")
@@ -126,9 +126,9 @@ def rm(args: list, shell) -> None:
         Err.msg("rm", "missing operand")
         return
     for f in args:
-        path = os.path.join(shell.cwd, f)
+        path = shell.cwd / f
         try:
-            if os.path.isdir(path):
+            if path.is_dir():
                 os.rmdir(path)
             else:
                 os.remove(path)
