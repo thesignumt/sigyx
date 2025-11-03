@@ -16,7 +16,7 @@ _cmdr = Reg()
 @_cmdr.reg
 def cd(args: list, shell) -> None:
     if not args:
-        Err.msg("cd", "missing operand")
+        os.chdir(os.path.expanduser("~"))
         return
     new_dir = (Path(shell.cwd) / args[0]).resolve()
     if not new_dir.exists():
