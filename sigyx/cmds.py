@@ -17,7 +17,7 @@ _cmdr = Reg()
 
 
 @_cmdr.reg
-def cd(args: list, shell) -> None:
+def cd(args: list, shell: _shell) -> None:
     if not args:
         os.chdir(os.path.expanduser("~"))
         return
@@ -36,17 +36,17 @@ def cd(args: list, shell) -> None:
 
 
 @_cmdr.reg(name="cd..")
-def cd_back(args: list, shell) -> None:
+def cd_back(args: list, shell: _shell) -> None:
     cd([".."], shell)
 
 
 @_cmdr.reg
-def pwd(args: list, shell) -> None:
+def pwd(args: list, shell: _shell) -> None:
     console.print(shell.cwd, style="cyan")
 
 
 @_cmdr.reg
-def mkdir(args: list, shell) -> None:
+def mkdir(args: list, shell: _shell) -> None:
     if not args:
         Err.msg("mkdir", "missing operand")
         return
@@ -61,7 +61,7 @@ def mkdir(args: list, shell) -> None:
 
 
 @_cmdr.reg
-def ls(args: list, shell) -> None:
+def ls(args: list, shell: _shell) -> None:
     path = Path(args[0]) if args else shell.cwd
     try:
         entries = os.listdir(path)
@@ -105,7 +105,7 @@ def ls(args: list, shell) -> None:
 
 
 @_cmdr.reg
-def cat(args: list, shell) -> None:
+def cat(args: list, shell: _shell) -> None:
     if not args:
         Err.msg("cat", "missing operand")
         return
@@ -121,7 +121,7 @@ def cat(args: list, shell) -> None:
 
 
 @_cmdr.reg
-def rm(args: list, shell) -> None:
+def rm(args: list, shell: _shell) -> None:
     if not args:
         Err.msg("rm", "missing operand")
         return
@@ -144,5 +144,5 @@ def rm(args: list, shell) -> None:
 
 
 @_cmdr.reg(aliases=["clear"])
-def cls(args: list, shell):
+def cls(args: list, shell: _shell):
     os.system("cls" if platform.system() == "Windows" else "clear")
