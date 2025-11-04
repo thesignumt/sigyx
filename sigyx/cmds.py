@@ -18,8 +18,13 @@ _cmdr = Reg()
 
 @_cmdr.reg
 def cd(args: list, shell: _shell) -> None:
-    if not args:
-        os.chdir(os.path.expanduser("~"))
+    def home() -> None:
+        home = Path.home()
+        os.chdir(str(home))
+        shell.cwd = home
+
+    if not args or args[0] == "~":
+        home()
         return
     new_dir = (Path(shell.cwd) / args[0]).resolve()
     if not new_dir.exists():
