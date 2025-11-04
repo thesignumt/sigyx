@@ -4,7 +4,7 @@ import stat
 from datetime import datetime
 from pathlib import Path
 
-from .cli import _shell
+from .shell import _shell
 from .utils.color import console
 from .utils.err import Err
 from .utils.reg import Reg
